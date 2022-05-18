@@ -1,0 +1,36 @@
+@charset "UTF-8";
+/* Указываем box sizing */
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+/* Убираем отступы */
+* {
+  padding: 0;
+  margin: 0;
+}
+
+/* Стили header */
+header .container {
+  border: 1px solid black;
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+header .cartButton {
+  padding: 2px 4px;
+  border-radius: 8px;
+}
+
+header__cartButton {
+  margin-left: auto;
+}
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,18 @@
+/* Стили header */
+header {
+    .container {
+        border: 1px solid black;
+        padding: 8px 16px;
+        display: flex;
+        justify-content:flex-end;
+    }
+
+    .cartButton {
+        padding: 2px 4px;
+        border-radius: 8px;
+    }
+
+    &__cartButton {
+        margin-left: auto;
+    }
+}
