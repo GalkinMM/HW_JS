@@ -18,7 +18,7 @@ const goods = [
 
 const renderGoodsItem = (title = 'Товар закончился', price = '0') => 
     `<div class='goodsItem'>
-        <img src='../image/defGoods.png' alt='good'>
+        <img src='image/defGoods.png' alt='good'>
         <h3>${title}</h3>
         <p>${price}$</p>
         <button class="cartButtonAdd" type="button">Добавить</button>
