@@ -15,9 +15,25 @@ const goods = [
     { title: 'Shoes', price: 250 },
 ];
 
+const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+const GOODS = `${BASE_URL}/catalogData.json`;
+const BASKETGOODS = `${BASE_URL}/getBasket.json`;
+
+function service(url, callback) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+
+    const loadHandler = () => {
+        callback(JSON.parse(xhr.response));
+    }
+    xhr.onload = loadHandler;
+
+    xhr.send();
+}
+
 class GoodsItem {
-    constructor({ title = 'Товар закончился', price = 0 }) {
-        this.title = title;
+    constructor({ product_name = 'Товар закончился', price = 0 }) {
+        this.title = product_name;
         this.price = price;
     }
 
@@ -34,15 +50,17 @@ class GoodsItem {
 }
 
 class GoodsList {
-    fetchData() {
-        this.list = goods;
+    list = [];
+    fetchData(callback) {
+        service(GOODS, (data) => {
+            this.list = data;
+            callback();
+        });
+        
     }
 
     getCount() {
-        console.log(this.list);
-        return this.list.reduce((sum, { price }) => {
-            return sum + +price;
-        }, 0);
+        return this.list.reduce((prev, { price }) => prev + price, 0);
     }
 
     render() {
@@ -55,10 +73,27 @@ class GoodsList {
     }
 }
 
-const goodsList = new GoodsList(goods);
-goodsList.fetchData();
-goodsList.render();
-console.log(`Сумма цен всех товаров = ${goodsList.getCount()}`);
+class BasketGoods {
+    list = [];
+    fetchData(callback) {
+        service(BASKETGOODS, (data) => {
+            this.list = data;
+            callback();
+        });
+    };
+}
+
+const goodsList = new GoodsList();
+goodsList.fetchData(() => {
+    goodsList.render();
+    console.log(`Сумма цен всех товаров = ${goodsList.getCount()}`);
+});
+
+const basketGoods = new BasketGoods();
+basketGoods.fetchData;
+
+// Починить Grid
+// Создать класс для корзины товаров, который должен иметь в себе свойство (список товаров корзины) и один метод - который реализует получение с сервера списка товаров корзины и запись его в ранее названное свойство. (url ендпоинта смотреть в методичке)
 
 
 
