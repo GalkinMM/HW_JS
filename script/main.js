@@ -1,5 +1,6 @@
 "use strict";
 
+// Это можно удалять?
 // const goods = [
 //     { title: 'Shirt', price: 150 },
 //     { title: 'Socks', price: 50 },
@@ -99,7 +100,7 @@ class BasketList {
 const basketList = new BasketList();
 basketList.fetchData(() => {
     basketList.render();
-    console.log(basketList);
+    console.log(basketList); //Вывод содержимого корзины
 });
 
 
