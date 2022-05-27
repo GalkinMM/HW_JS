@@ -26,11 +26,11 @@ function service(url, callback) {
 
     const loadHandler = () => {
         callback(JSON.parse(xhr.response));
-    }
+    };
     xhr.onload = loadHandler;
 
     xhr.send();
-}
+};
 
 class GoodsItem {
     constructor({ product_name = 'Товар закончился', price = 0 }) {
