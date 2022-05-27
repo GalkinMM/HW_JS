@@ -1,19 +1,19 @@
 "use strict";
 
-const goods = [
-    { title: 'Shirt', price: 150 },
-    { title: 'Socks', price: 50 },
-    { title: 'Jacket', price: 350 },
-    { title: 'Shoes', price: 250 },
-    { title: 'Shirt', price: 150 },
-    { title: 'Socks', price: 50 },
-    { title: 'Jacket', price: 350 },
-    { title: 'Shoes', price: 250 },
-    { title: 'Shirt', price: 150 },
-    { title: 'Socks', price: 50 },
-    { title: 'Jacket', price: 350 },
-    { title: 'Shoes', price: 250 },
-];
+// const goods = [
+//     { title: 'Shirt', price: 150 },
+//     { title: 'Socks', price: 50 },
+//     { title: 'Jacket', price: 350 },
+//     { title: 'Shoes', price: 250 },
+//     { title: 'Shirt', price: 150 },
+//     { title: 'Socks', price: 50 },
+//     { title: 'Jacket', price: 350 },
+//     { title: 'Shoes', price: 250 },
+//     { title: 'Shirt', price: 150 },
+//     { title: 'Socks', price: 50 },
+//     { title: 'Jacket', price: 350 },
+//     { title: 'Shoes', price: 250 },
+// ];
 
 const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 const GOODS = `${BASE_URL}/catalogData.json`;
@@ -35,7 +35,7 @@ class GoodsItem {
     constructor({ product_name = 'Товар закончился', price = 0 }) {
         this.title = product_name;
         this.price = price;
-    }
+    };
 
     render() {
         return `
@@ -46,8 +46,8 @@ class GoodsItem {
                 <button class="cartButtonAdd" type="button">Добавить</button>
             </div>
         `
-    }
-}
+    };
+};
 
 class GoodsList {
     list = [];
@@ -57,11 +57,11 @@ class GoodsList {
             callback();
         });
         
-    }
+    };
 
     getCount() {
         return this.list.reduce((prev, { price }) => prev + price, 0);
-    }
+    };
 
     render() {
         const goodsList = this.list.map(item => {
@@ -70,18 +70,8 @@ class GoodsList {
         }).join('');
 
         document.querySelector('.goodsList').innerHTML = goodsList;
-    }
-}
-
-class BasketGoods {
-    list = [];
-    fetchData(callback) {
-        service(BASKETGOODS, (data) => {
-            this.list = data;
-            callback();
-        });
     };
-}
+};
 
 const goodsList = new GoodsList();
 goodsList.fetchData(() => {
@@ -89,11 +79,28 @@ goodsList.fetchData(() => {
     console.log(`Сумма цен всех товаров = ${goodsList.getCount()}`);
 });
 
-const basketGoods = new BasketGoods();
-basketGoods.fetchData;
+class BasketList {
+    list = [];
+    fetchData(callback) {
+        service(BASKETGOODS, (data) => {
+            this.list = data.contents;
+            callback();
+        });
+    };
 
-// Починить Grid
-// Создать класс для корзины товаров, который должен иметь в себе свойство (список товаров корзины) и один метод - который реализует получение с сервера списка товаров корзины и запись его в ранее названное свойство. (url ендпоинта смотреть в методичке)
+    render() {
+        const basketList = this.list.map(item => {
+            const goodsItem = new GoodsItem(item);
+            return goodsItem.render();
+        }).join('');
+    };
+};
+
+const basketList = new BasketList();
+basketList.fetchData(() => {
+    basketList.render();
+    console.log(basketList);
+});
 
 
 
