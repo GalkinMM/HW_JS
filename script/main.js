@@ -23,12 +23,9 @@ const BASKETGOODS = `${BASE_URL}/getBasket.json`;
 function service(url, callback) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url);
-
-    const loadHandler = () => {
+    xhr.onload = () => {
         callback(JSON.parse(xhr.response));
     };
-    xhr.onload = loadHandler;
-
     xhr.send();
 };
 
@@ -52,9 +49,12 @@ class GoodsItem {
 
 class GoodsList {
     list = [];
+    filteredList = [];
+
     fetchData(callback) {
         service(GOODS, (data) => {
             this.list = data;
+            this.filteredList = data;
             callback();
         });
         
@@ -65,12 +65,18 @@ class GoodsList {
     };
 
     render() {
-        const goodsList = this.list.map(item => {
+        const goodsList = this.filteredList.map(item => {
             const goodsItem = new GoodsItem(item);
             return goodsItem.render();
         }).join('');
 
         document.querySelector('.goodsList').innerHTML = goodsList;
+    };
+
+    filter(str) {
+        this.filteredList = this.list.filter(({ product_name }) => {
+            return (new RegExp(str, 'i')).test(product_name);
+        });
     };
 };
 
@@ -101,6 +107,12 @@ const basketList = new BasketList();
 basketList.fetchData(() => {
     basketList.render();
     console.log(basketList); //Вывод содержимого корзины
+});
+
+document.getElementsByClassName('search__button')[0].addEventListener('click', () => {
+    const inpSearch = document.getElementsByClassName('search__input')[0];
+    goodsList.filter(inpSearch.value);
+    goodsList.render();
 });
 
 
