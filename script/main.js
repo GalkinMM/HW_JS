@@ -1,21 +1,5 @@
 "use strict";
 
-// Это можно удалять?
-// const goods = [
-//     { title: 'Shirt', price: 150 },
-//     { title: 'Socks', price: 50 },
-//     { title: 'Jacket', price: 350 },
-//     { title: 'Shoes', price: 250 },
-//     { title: 'Shirt', price: 150 },
-//     { title: 'Socks', price: 50 },
-//     { title: 'Jacket', price: 350 },
-//     { title: 'Shoes', price: 250 },
-//     { title: 'Shirt', price: 150 },
-//     { title: 'Socks', price: 50 },
-//     { title: 'Jacket', price: 350 },
-//     { title: 'Shoes', price: 250 },
-// ];
-
 const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 const GOODS = `${BASE_URL}/catalogData.json`;
 const BASKETGOODS = `${BASE_URL}/getBasket.json`;
@@ -57,7 +41,6 @@ class GoodsList {
             this.filteredList = data;
             callback();
         });
-        
     };
 
     getCount() {
