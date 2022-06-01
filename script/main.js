@@ -4,13 +4,8 @@ const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-st
 const GOODS = `${BASE_URL}/catalogData.json`;
 const BASKETGOODS = `${BASE_URL}/getBasket.json`;
 
-function service(url, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.onload = () => {
-        callback(JSON.parse(xhr.response));
-    };
-    xhr.send();
+function service(url) {
+    return fetch(url).then(res => res.json());
 };
 
 class GoodsItem {
@@ -35,11 +30,11 @@ class GoodsList {
     list = [];
     filteredList = [];
 
-    fetchData(callback) {
-        service(GOODS, (data) => {
+    fetchData() {
+        return service(GOODS).then(data => {
             this.list = data;
             this.filteredList = data;
-            callback();
+            return data;
         });
     };
 
@@ -64,17 +59,18 @@ class GoodsList {
 };
 
 const goodsList = new GoodsList();
-goodsList.fetchData(() => {
+goodsList.fetchData().then(() => {
     goodsList.render();
     console.log(`Сумма цен всех товаров = ${goodsList.getCount()}`);
 });
-
+    
 class BasketList {
     list = [];
-    fetchData(callback) {
-        service(BASKETGOODS, (data) => {
+
+    fetchData() {
+        return service(BASKETGOODS).then(data => {
             this.list = data.contents;
-            callback();
+            return data;
         });
     };
 
@@ -87,7 +83,7 @@ class BasketList {
 };
 
 const basketList = new BasketList();
-basketList.fetchData(() => {
+basketList.fetchData().then(() => {
     basketList.render();
     console.log(basketList); //Вывод содержимого корзины
 });
