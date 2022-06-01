@@ -1,35 +1,11 @@
 "use strict";
 
-// Это можно удалять?
-// const goods = [
-//     { title: 'Shirt', price: 150 },
-//     { title: 'Socks', price: 50 },
-//     { title: 'Jacket', price: 350 },
-//     { title: 'Shoes', price: 250 },
-//     { title: 'Shirt', price: 150 },
-//     { title: 'Socks', price: 50 },
-//     { title: 'Jacket', price: 350 },
-//     { title: 'Shoes', price: 250 },
-//     { title: 'Shirt', price: 150 },
-//     { title: 'Socks', price: 50 },
-//     { title: 'Jacket', price: 350 },
-//     { title: 'Shoes', price: 250 },
-// ];
-
 const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 const GOODS = `${BASE_URL}/catalogData.json`;
 const BASKETGOODS = `${BASE_URL}/getBasket.json`;
 
-function service(url, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-
-    const loadHandler = () => {
-        callback(JSON.parse(xhr.response));
-    };
-    xhr.onload = loadHandler;
-
-    xhr.send();
+function service(url) {
+    return fetch(url).then(res => res.json());
 };
 
 class GoodsItem {
@@ -52,12 +28,14 @@ class GoodsItem {
 
 class GoodsList {
     list = [];
-    fetchData(callback) {
-        service(GOODS, (data) => {
+    filteredList = [];
+
+    fetchData() {
+        return service(GOODS).then(data => {
             this.list = data;
-            callback();
+            this.filteredList = data;
+            return data;
         });
-        
     };
 
     getCount() {
@@ -65,27 +43,34 @@ class GoodsList {
     };
 
     render() {
-        const goodsList = this.list.map(item => {
+        const goodsList = this.filteredList.map(item => {
             const goodsItem = new GoodsItem(item);
             return goodsItem.render();
         }).join('');
 
         document.querySelector('.goodsList').innerHTML = goodsList;
     };
+
+    filter(str) {
+        this.filteredList = this.list.filter(({ product_name }) => {
+            return (new RegExp(str, 'i')).test(product_name);
+        });
+    };
 };
 
 const goodsList = new GoodsList();
-goodsList.fetchData(() => {
+goodsList.fetchData().then(() => {
     goodsList.render();
     console.log(`Сумма цен всех товаров = ${goodsList.getCount()}`);
 });
-
+    
 class BasketList {
     list = [];
-    fetchData(callback) {
-        service(BASKETGOODS, (data) => {
+
+    fetchData() {
+        return service(BASKETGOODS).then(data => {
             this.list = data.contents;
-            callback();
+            return data;
         });
     };
 
@@ -98,9 +83,15 @@ class BasketList {
 };
 
 const basketList = new BasketList();
-basketList.fetchData(() => {
+basketList.fetchData().then(() => {
     basketList.render();
     console.log(basketList); //Вывод содержимого корзины
+});
+
+document.getElementsByClassName('search__button')[0].addEventListener('click', () => {
+    const inpSearch = document.getElementsByClassName('search__input')[0];
+    goodsList.filter(inpSearch.value);
+    goodsList.render();
 });
 
 
