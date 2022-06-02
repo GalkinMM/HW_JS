@@ -7,33 +7,3 @@ const BASKETGOODS = `${BASE_URL}/getBasket.json`;
 function service(url) {
     return fetch(url).then(res => res.json())
 }
-
-window.onload = () => {
-    const app = new Vue({
-        el: '#root',
-
-        data: {
-            list: [],
-            searchValue: ''
-        },
-
-        mounted() {
-            service(GOODS).then(data => {
-                this.list = data;
-                return data
-            })
-        },
-
-        computed: {
-            getCount() {
-                return this.list.reduce((prev, { price }) => prev + price, 0)
-            },
-
-            filteredList() {
-                return this.list.filter(({ product_name }) => {
-                    return product_name.match(RegExp(this.searchValue, 'i'))
-                })
-            }
-        }
-    })
-}
