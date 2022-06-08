@@ -1,5 +1,5 @@
 // @ts-nocheck
-
+"use strict"
 
 const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 const GOODS = `${BASE_URL}/catalogData.json`;
@@ -9,7 +9,43 @@ function service(url) {
     return fetch(url).then(res => res.json())
 }
 
-window.onload = () => {
+function init() {
+    Vue.component('vc_basket', {
+        template: `
+            <div class="basketList">
+                <div class="basketListContent">
+                    <div class="basketListContentTop">
+                        <h2>Корзина {{ getCount }}</h2>
+
+                        <span   class="closeButton"
+                                @click="basketWindowVisibleChange">
+                                &times;
+                        </span>
+                    </div>
+
+                    <div class="basketListContentMain">
+                        Здесь будут товары
+                    </div>
+                </div>
+            </div>
+        `
+    });
+
+    Vue.component('vc_gooditems', {
+        props: [
+            'item'
+        ],
+
+        template: `
+            <div class='goodsItem'>
+                <img src='image/defGoods.png' alt='good'></img>
+                <h3>{{ item.product_name }}</h3>
+                <p>{{ item.price }} $</p>
+                <button class='cartButtonAdd' type='button'>Добавить</button>
+            </div>
+        `
+    });
+
     const app = new Vue({
         el: '#root',
 
@@ -44,10 +80,6 @@ window.onload = () => {
             },
         }
     });
-
-    Vue.component("rte", {
-        template: '
-            
-        '
-    })
 }
+
+window.onload = init;

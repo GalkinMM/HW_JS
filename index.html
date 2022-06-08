@@ -33,14 +33,16 @@
         </header>
     
         <main>
+            <vc_basket v-if="basketWindowVisible"></vc_basket>
             <div class="basketList" v-if="basketWindowVisible">
                 <div class="basketListContent">
                     <div class="basketListContentTop">
                         <h2>Корзина {{ getCount }}</h2>
 
                         <span   class="closeButton"
-                                @click="basketWindowVisibleChange"
-                                >&times;</span>
+                                @click="basketWindowVisibleChange">
+                                &times;
+                        </span>
                     </div>
 
                     <div class="basketListContentMain">
@@ -48,17 +50,9 @@
                     </div>
                 </div>
             </div>
-
             <div class="container">
                 <div class="goodsList" v-if="filteredList.length">
-                    <!-- <vcGoodItem v-for='item in filteredList' :item="item"></vcGoodItem> -->
-                    
-                    <div class='goodsItem' v-for='item in filteredList'>
-                        <img src='image/defGoods.png' alt='good'></img>
-                        <h3>{{ item.product_name }}</h3>
-                        <p>{{ item.price }} $</p>
-                        <button class="cartButtonAdd" type="button">Добавить</button>
-                    </div>
+                    <vc_gooditems v-for='item in filteredList' :item="item"></vc_gooditems>
                 </div>
                 <div v-else>Товаров нет</div>
             </div>
