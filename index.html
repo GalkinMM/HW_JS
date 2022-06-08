@@ -9,7 +9,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="script/main.js"></script>
-    <script src="script/main.vue"></script>
 
     <title>eShop</title>
 </head>
@@ -51,17 +50,17 @@
             </div>
 
             <div class="container">
-                <div class="goodsList">
+                <div class="goodsList" v-if="filteredList.length">
+                    <!-- <vcGoodItem v-for='item in filteredList' :item="item"></vcGoodItem> -->
+                    
                     <div class='goodsItem' v-for='item in filteredList'>
-                        <img src='image/defGoods.png' alt='good'>
-
+                        <img src='image/defGoods.png' alt='good'></img>
                         <h3>{{ item.product_name }}</h3>
-
                         <p>{{ item.price }} $</p>
-
                         <button class="cartButtonAdd" type="button">Добавить</button>
                     </div>
                 </div>
+                <div v-else>Товаров нет</div>
             </div>
         </main>
     </div>
