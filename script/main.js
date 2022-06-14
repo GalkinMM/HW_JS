@@ -10,6 +10,13 @@ function service(url) {
 }
 
 function init() {
+    Vue.component('custom_search', {
+        template:`
+        <input  type="text" class="search__input" placeholder="Поиск"
+                @input="$emit('input', $event.target.value)">
+        `
+    });
+
     Vue.component('vc_basket', {
         template: `
         <div class="basketList">

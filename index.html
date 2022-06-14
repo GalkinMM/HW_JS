@@ -19,11 +19,8 @@
                 <h1 class="title">eShop</h1>
 
                 <div class="search">
-                    <input  type="text"
-                            class="search__input"
-                            placeholder="Поиск"
-                            v-model="searchValue">
-                 </div>
+                    <custom_search v-model="searchValue"></custom_search>
+                </div>
                 
                 <button class="cartButton header__cartButton" 
                         type="button" 
@@ -33,7 +30,9 @@
         </header>
     
         <main>
-            <vc_basket v-if="basketWindowVisible" @close="basketWindowVisibleChange"></vc_basket>
+            <vc_basket  v-if="basketWindowVisible" 
+                        @close="basketWindowVisibleChange">
+            </vc_basket>
             <div class="container">
                 <div class="goodsList" v-if="filteredList.length">
                     <vc_gooditems v-for='item in filteredList' :item="item"></vc_gooditems>
