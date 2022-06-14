@@ -12,22 +12,22 @@ function service(url) {
 function init() {
     Vue.component('vc_basket', {
         template: `
-            <div class="basketList">
-                <div class="basketListContent">
-                    <div class="basketListContentTop">
-                        <h2>Корзина {{ getCount }}</h2>
+        <div class="basketList">
+            <div class="basketListContent">
+                <div class="basketListContentTop">
+                    <h2>Корзина {{ getCount }}</h2>
 
-                        <span   class="closeButton"
-                                @click="basketWindowVisibleChange">
-                                &times;
-                        </span>
-                    </div>
+                    <span   class="closeButton"
+                            @click="$emit('close')">
+                            &times;
+                    </span>
+                </div>
 
-                    <div class="basketListContentMain">
-                        Здесь будут товары
-                    </div>
+                <div class="basketListContentMain">
+                    Здесь будут товары
                 </div>
             </div>
+        </div>
         `
     });
 
