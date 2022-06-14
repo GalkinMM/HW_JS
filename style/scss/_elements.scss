@@ -1,7 +1,6 @@
 //Кнопки и инпут
 .cartButton,
 .cartButtonAdd,
-.search__button,
 .search__input {
     padding: 4px 8px;
     border-radius: 8px;
@@ -28,6 +27,7 @@
     border: 1px solid black;
     border-radius: 8px;
     width: 80%;
+    height: 80%;
     display: flex;
     flex-direction: column;
 
