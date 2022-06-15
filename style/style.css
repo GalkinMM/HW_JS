@@ -113,9 +113,9 @@ main .goodsList {
   display: -ms-grid;
   display: grid;
   grid-auto-flow: row;
-  -ms-grid-columns: max-content auto;
-      grid-template-columns: -webkit-max-content auto;
-      grid-template-columns: max-content auto;
+  -ms-grid-columns: auto max-content;
+      grid-template-columns: auto -webkit-max-content;
+      grid-template-columns: auto max-content;
   gap: 16px;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
