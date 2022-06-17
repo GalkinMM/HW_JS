@@ -50,8 +50,28 @@
     }
 
     &Main {
-        background-color: aqua;
+        display: flex;
     }
 
     
+}
+
+.basketItem {
+    display: flex;
+    flex-direction: row;
+
+    &__Name {
+        font-weight: bold;
+        margin-right: 16px;
+        margin-bottom: 4px; 
+    }
+
+    &__Price {
+        margin-bottom: 4px;
+    }
+
+    button {
+        width: 16px;
+    }
+
 }

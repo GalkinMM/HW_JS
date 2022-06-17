@@ -7,7 +7,7 @@ main {
     .goodsList {
         display: grid;
         grid-auto-flow: row;
-        grid-template-columns: max-content auto;
+        grid-template-columns: auto max-content;
         gap: 16px;
         justify-content: center;
     }

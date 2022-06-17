@@ -80,7 +80,33 @@
 }
 
 .basketListContentMain {
-  background-color: aqua;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.basketItem {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.basketItem__Name {
+  font-weight: bold;
+  margin-right: 16px;
+  margin-bottom: 4px;
+}
+
+.basketItem__Price {
+  margin-bottom: 4px;
+}
+
+.basketItem button {
+  width: 16px;
 }
 
 /* Стили header */
@@ -113,9 +139,9 @@ main .goodsList {
   display: -ms-grid;
   display: grid;
   grid-auto-flow: row;
-  -ms-grid-columns: max-content auto;
-      grid-template-columns: -webkit-max-content auto;
-      grid-template-columns: max-content auto;
+  -ms-grid-columns: auto max-content;
+      grid-template-columns: auto -webkit-max-content;
+      grid-template-columns: auto max-content;
   gap: 16px;
   -webkit-box-pack: center;
       -ms-flex-pack: center;

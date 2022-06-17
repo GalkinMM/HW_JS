@@ -32,6 +32,7 @@
         <main>
             <vc_basket  v-if="basketWindowVisible" 
                         @close="basketWindowVisibleChange">
+                <vc_basketitems></vc_basketitems>
             </vc_basket>
             <div class="container">
                 <div class="goodsList" v-if="filteredList.length">
