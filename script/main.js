@@ -4,10 +4,11 @@
 // const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
 const BASE_URL = 'http://localhost:8000/';
 const GOODS = `${BASE_URL}catalogData.json`;
-const BASKETGOODS = `${BASE_URL}getBasket.json`;
+const BASKETGOODS = `${BASE_URL}basket`;
 
 function service(url) {
-    return fetch(url).then(res => res.json())
+    return fetch(url)
+    .then(res => res.json())
 }
 
 function init() {
@@ -19,11 +20,17 @@ function init() {
     });
 
     Vue.component('vc_basket', {
+        data() {
+            return {
+                basketGoodsItem: []
+            }
+        },
+
         template: `
         <div class="basketList">
             <div class="basketListContent">
                 <div class="basketListContentTop">
-                    <h2>Корзина {{ getCount }}</h2>
+                    <h2>Корзина</h2>
 
                     <span   class="closeButton"
                             @click="$emit('close')">
@@ -32,11 +39,17 @@ function init() {
                 </div>
 
                 <div class="basketListContentMain">
-                    Здесь будут товары
+                    <slot></slot>
                 </div>
             </div>
         </div>
-        `
+        `,
+
+        mounted() {
+            service(BASKETGOODS).then((data) => {
+                this.basketGoodsItem = data;
+            });
+        }
     });
 
     Vue.component('vc_gooditems', {
@@ -50,6 +63,22 @@ function init() {
                 <h3>{{ item.product_name }}</h3>
                 <p>{{ item.price }} $</p>
                 <button class='cartButtonAdd' type='button'>Добавить</button>
+            </div>
+        `
+    });
+
+    Vue.component('vc_basketitems', {
+        props: [
+            'item'
+        ],
+
+        template: `
+            <div class='basketItem'>
+                <p class="basketItem__Name">Товар</p>
+                <p class="basketItem__Price">Цена $</p>
+                <p class="basketItem__Price">кол.</p>
+                <button>+</button>
+                <button>-</button>
             </div>
         `
     });
@@ -85,7 +114,7 @@ function init() {
                 return this.list.filter(({ product_name }) => {
                     return product_name.match(RegExp(this.searchValue, 'gui'))
                 })
-            },
+            }
         }
     });
 }

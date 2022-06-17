@@ -80,7 +80,33 @@
 }
 
 .basketListContentMain {
-  background-color: aqua;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.basketItem {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.basketItem__Name {
+  font-weight: bold;
+  margin-right: 16px;
+  margin-bottom: 4px;
+}
+
+.basketItem__Price {
+  margin-bottom: 4px;
+}
+
+.basketItem button {
+  width: 16px;
 }
 
 /* Стили header */
