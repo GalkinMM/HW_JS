@@ -1,25 +1,39 @@
 // @ts-nocheck
 "use strict"
 
-// const BASE_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
 const BASE_URL = 'http://localhost:8000/';
-const GOODS = `${BASE_URL}catalogData.json`;
+const getGoodsIiems = `${BASE_URL}catalogData.json`;
+const GOODS = `${BASE_URL}goods`;
 const BASKETGOODS = `${BASE_URL}basket`;
 
+// Функция получения объекта JSON
 function service(url) {
     return fetch(url)
     .then(res => res.json())
 }
 
+function serviceWithBody(url = "", method = "POST", body = {}) {
+    return fetch(
+        url,
+        {
+            method,
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify(body)
+        }
+    )
+}
+
 function init() {
-    Vue.component('custom_search', {
+    const vcCustomSearch = Vue.component('custom_search', {
         template:`
         <input  type="text" class="search__input" placeholder="Поиск"
                 @input="$emit('input', $event.target.value)">
         `
     });
 
-    Vue.component('vc_basket', {
+    const vcBasket = Vue.component('vc_basket', {
         data() {
             return {
                 basketGoodsItem: []
@@ -39,20 +53,20 @@ function init() {
                 </div>
 
                 <div class="basketListContentMain">
-                    <slot></slot>
+                    <vc_basketitems v-for="item in basketGoodsItem" :item="item"></vc_basketitems>
                 </div>
             </div>
         </div>
         `,
 
         mounted() {
-            service(BASKETGOODS).then((data) => {
+            service(BASKETGOODS).then(data => {
                 this.basketGoodsItem = data;
             });
         }
     });
 
-    Vue.component('vc_gooditems', {
+    const vcGoodItem = Vue.component('vc_gooditems', {
         props: [
             'item'
         ],
@@ -62,25 +76,39 @@ function init() {
                 <img src='image/defGoods.png' alt='good'></img>
                 <h3>{{ item.product_name }}</h3>
                 <p>{{ item.price }} $</p>
-                <button class='cartButtonAdd' type='button'>Добавить</button>
+                <button class = 'cartButtonAdd'
+                        type = 'button'
+                        @click = 'addGood'>Добавить</button>
             </div>
-        `
+        `,
+
+        methods: {
+            addGood() {
+                serviceWithBody(GOODS, "POST", {
+                    id: this.item.id_product
+                })
+            }
+        }
     });
 
-    Vue.component('vc_basketitems', {
+    const vcBasketItems = Vue.component('vc_basketitems', {
         props: [
             'item'
         ],
 
         template: `
             <div class='basketItem'>
-                <p class="basketItem__Name">Товар</p>
-                <p class="basketItem__Price">Цена $</p>
-                <p class="basketItem__Price">кол.</p>
+                <p class="basketItem__Name">{{ item.product_name }}</p>
+                <p class="basketItem__Price">{{ item.price }}$</p>
+                <p class="basketItem__Price">{{ item.count }} шт.</p>
                 <button>+</button>
                 <button>-</button>
             </div>
-        `
+        `,
+
+        mounted() {
+            console.log(this.item)
+        }
     });
 
     const app = new Vue({
@@ -99,7 +127,7 @@ function init() {
         },
 
         mounted() {
-            service(GOODS).then(data => {
+            service(getGoodsIiems).then(data => {
                 this.list = data;
                 return data
             })
