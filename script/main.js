@@ -68,7 +68,8 @@ function init() {
                         <vc_basketitems
                             v-for="item in basketGoodsItem"
                             :item="item"
-                            @add="addGood">
+                            @add="addGood"
+                            @del="delGood">
                         </vc_basketitems>
                     </div>
                 </div>
@@ -84,6 +85,13 @@ function init() {
         methods: {
             addGood(id) {
                 serviceWithBody(BASKETGOODS, "POST", {
+                    id
+                }).then((data) => {
+                    this.basketGoodsItem = data
+                })
+            },
+            delGood(id) {
+                serviceWithBody(BASKETGOODS, "DELETE", {
                     id
                 }).then((data) => {
                     this.basketGoodsItem = data
@@ -130,7 +138,7 @@ function init() {
                 <p class="basketItem__Price">{{ item.price }}$</p>
                 <p class="basketItem__Price">{{ item.count }} шт.</p>
                 <button @click="$emit('add', item.id_product)">+</button>
-                <button>-</button>
+                <button @click="$emit('del', item.id_product)">-</button>
             </div>
         `
     });

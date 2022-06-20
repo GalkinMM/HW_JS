@@ -39,10 +39,34 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 app.delete('/basket', (res, req) => {
-    //дз
+    getBasket().then(basket => {
+        const basketItem = basket.find(({ id_product: _id }) => 
+            _id === res.body.id);
+        if (basketItem.count > 1) {
+            basket = basket.map(basketItem => {
+                if (basketItem.id_product === res.body.id) {
+                    return {
+                        ...basketItem,
+                        count: basketItem.count - 1
+                    }
+                } else {
+                    return basketItem
+                }
+            })
+        } else {
+            const index = basket.findIndex(basketItem => 
+                basketItem.id_product === res.body.id);
+            basket.splice(index, 1);
+        };
+        return writeFile(BASKET_PATH, JSON.stringify(basket)).then(() => {
+            return getReformBasket()
+        }).then(result => {
+            req.send(result)
+        })
+    })  
 })
 
-app.post('/basket', (res, req) => { /// /goods=>/basket
+app.post('/basket', (res, req) => {
     getBasket().then(basket => {
         const basketItem = basket.find(({ id_product: _id }) => 
             _id === res.body.id);
