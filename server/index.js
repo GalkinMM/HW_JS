@@ -38,7 +38,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-app.post('/goods', (res, req) => {
+app.delete('/basket', (res, req) => {
+    //дз
+})
+
+app.post('/basket', (res, req) => { /// /goods=>/basket
     getBasket().then(basket => {
         const basketItem = basket.find(({ id_product: _id }) => 
             _id === res.body.id);

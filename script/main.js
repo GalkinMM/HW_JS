@@ -83,7 +83,7 @@ function init() {
 
         methods: {
             addGood(id) {
-                serviceWithBody(GOODS, "POST", {
+                serviceWithBody(BASKETGOODS, "POST", {
                     id
                 }).then((data) => {
                     this.basketGoodsItem = data
@@ -112,7 +112,7 @@ function init() {
 
         methods: {
             addGood() {
-                serviceWithBody(GOODS, "POST", {
+                serviceWithBody(BASKETGOODS, "POST", {
                     id: this.item.id_product
                 })
             }
