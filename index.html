@@ -22,8 +22,8 @@
                     <custom_search v-model="searchValue"></custom_search>
                 </div>
                 
-                <button class = "cartButton header__cartButton"
-                        @click = "basketWindowVisibleChange">
+                <button class="cartButton header__cartButton"
+                        @click="basketWindowVisibleChange">
                         Корзина
                 </button>
             </div>
@@ -32,12 +32,16 @@
         <main>
             <div class="container">
                 <div class="goodsList" v-if="filteredList.length">
-                    <vc_gooditems v-for='item in filteredList' :item="item"></vc_gooditems>
+                    <vc_gooditems
+                        v-for="item in filteredList"
+                        :item="item">
+                    </vc_gooditems>
                 </div>
                 <div v-else>Товаров нет</div>
             </div>
-            <vc_basket  v-if = "basketWindowVisible" 
-                        @close = "basketWindowVisibleChange">
+            <vc_basket
+                v-if="basketWindowVisible" 
+                @close="basketWindowVisibleChange">
             </vc_basket>
         </main>
     </div>
