@@ -79,12 +79,6 @@
   cursor: pointer;
 }
 
-.basketListContentMain {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
 .basketItem {
   display: -webkit-box;
   display: -ms-flexbox;

@@ -61,7 +61,7 @@ function init() {
 
         mounted() {
             service(BASKETGOODS).then(data => {
-                this.basketGoodsItem = data;
+                this.basketGoodsItem = data
             });
         }
     });
@@ -104,11 +104,7 @@ function init() {
                 <button>+</button>
                 <button>-</button>
             </div>
-        `,
-
-        mounted() {
-            console.log(this.item)
-        }
+        `
     });
 
     const app = new Vue({

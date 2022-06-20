@@ -20,9 +20,8 @@ function getReformBasket() {
     ]).then(([goods, basket]) => {
         const result = basket.map(basketGood => {
             const { id_product: _basketId } = basketGood;
-            const good =  goods.find(({ id_product: _goodsId }) => {
-                _goodsId == _basketId
-            });
+            const good =  goods.find(({ id_product: _goodsId }) => 
+                _goodsId === _basketId);
             return {
                 ...basketGood,
                 ...good
