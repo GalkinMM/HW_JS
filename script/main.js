@@ -9,7 +9,7 @@ const BASKETGOODS = `${BASE_URL}basket`;
 // Функция получения объекта JSON
 function service(url) {
     return fetch(url)
-    .then(res => res.json())
+        .then(res => res.json())
 }
 
 function serviceWithBody(url = "", method = "POST", body = {}) {
@@ -22,17 +22,17 @@ function serviceWithBody(url = "", method = "POST", body = {}) {
             },
             body: JSON.stringify(body)
         }
-    )
+    ).then(res => res.json())
 }
 
 function init() {
-    const vcCustomButton = Vue.component("custom_button", {
-        template: `
-            <button>
-                <slot></slot>
-            </button>
-        `
-    });
+    // const vcCustomButton = Vue.component("custom_button", {
+    //     template: `
+    //         <button>
+    //             <slot></slot>
+    //         </button>
+    //     `
+    // });
     
     const vcCustomSearch = Vue.component("custom_search", {
         template: `
@@ -44,12 +44,13 @@ function init() {
         `
     });
 
-    const vcBasket = Vue.component('vc_basket', {
+    const vcBasket = Vue.component("vc_basket", {
         data() {
             return {
                 basketGoodsItem: []
             }
         },
+
         template: `
             <div class="basketList">
                 <div class="basketListContent">
@@ -66,16 +67,28 @@ function init() {
                     <div class="basketListContentMain">
                         <vc_basketitems
                             v-for="item in basketGoodsItem"
-                            :item="item">
+                            :item="item"
+                            @add="addGood">
                         </vc_basketitems>
                     </div>
                 </div>
             </div>
         `,
+
         mounted() {
             service(BASKETGOODS).then(data => {
                 this.basketGoodsItem = data
             })
+        },
+
+        methods: {
+            addGood(id) {
+                serviceWithBody(GOODS, "POST", {
+                    id
+                }).then((data) => {
+                    this.basketGoodsItem = data
+                })
+            }
         }
     });
 
@@ -83,18 +96,20 @@ function init() {
         props: [
             "item"
         ],
+
         template: `
             <div class="goodsItem">
                 <img src="image/defGoods.png"></img>
                 <h3>{{ item.product_name }}</h3>
                 <p>{{ item.price }} $</p>
-                <custom_button
+                <button 
                     class="cartButtonAdd"
                     @click="addGood">
                     Добавить
                 </button>
             </div>
         `,
+
         methods: {
             addGood() {
                 serviceWithBody(GOODS, "POST", {
@@ -104,28 +119,28 @@ function init() {
         }
     });
 
-    const vcBasketItems = Vue.component('vc_basketitems', {
+    const vcBasketItems = Vue.component("vc_basketitems", {
         props: [
-            'item'
+            "item"
         ],
 
         template: `
-            <div class='basketItem'>
+            <div class="basketItem">
                 <p class="basketItem__Name">{{ item.product_name }}</p>
                 <p class="basketItem__Price">{{ item.price }}$</p>
                 <p class="basketItem__Price">{{ item.count }} шт.</p>
-                <custom_button>+</custom_button>
-                <custom_button>-</custom_button>
+                <button @click="$emit('add', item.id_product)">+</button>
+                <button>-</button>
             </div>
         `
     });
 
     const app = new Vue({
-        el: '#root',
+        el: "#root",
 
         data: {
             list: [],
-            searchValue: '',
+            searchValue: "",
             basketWindowVisible: false
         },
 
@@ -149,7 +164,7 @@ function init() {
 
             filteredList() {
                 return this.list.filter(({ product_name }) => {
-                    return product_name.match(RegExp(this.searchValue, 'gui'))
+                    return product_name.match(RegExp(this.searchValue, "gui"))
                 })
             }
         }
