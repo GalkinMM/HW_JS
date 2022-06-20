@@ -26,9 +26,20 @@ function serviceWithBody(url = "", method = "POST", body = {}) {
 }
 
 function init() {
-    const vcCustomSearch = Vue.component('custom_search', {
-        template:`
-        <input  type="text" class="search__input" placeholder="Поиск"
+    const vcCustomButton = Vue.component("custom_button", {
+        template: `
+            <button>
+                <slot></slot>
+            </button>
+        `
+    });
+    
+    const vcCustomSearch = Vue.component("custom_search", {
+        template: `
+            <input
+                type="text"
+                class="search__input"
+                placeholder="Поиск"
                 @input="$emit('input', $event.target.value)">
         `
     });
@@ -39,49 +50,51 @@ function init() {
                 basketGoodsItem: []
             }
         },
-
         template: `
-        <div class="basketList">
-            <div class="basketListContent">
-                <div class="basketListContentTop">
-                    <h2>Корзина</h2>
+            <div class="basketList">
+                <div class="basketListContent">
+                    <div class="basketListContentTop">
+                        <h2>Корзина</h2>
 
-                    <span   class="closeButton"
+                        <span
+                            class="closeButton"
                             @click="$emit('close')">
                             &times;
-                    </span>
-                </div>
+                        </span>
+                    </div>
 
-                <div class="basketListContentMain">
-                    <vc_basketitems v-for="item in basketGoodsItem" :item="item"></vc_basketitems>
+                    <div class="basketListContentMain">
+                        <vc_basketitems
+                            v-for="item in basketGoodsItem"
+                            :item="item">
+                        </vc_basketitems>
+                    </div>
                 </div>
             </div>
-        </div>
         `,
-
         mounted() {
             service(BASKETGOODS).then(data => {
                 this.basketGoodsItem = data
-            });
+            })
         }
     });
 
-    const vcGoodItem = Vue.component('vc_gooditems', {
+    const vcGoodItem = Vue.component("vc_gooditems", {
         props: [
-            'item'
+            "item"
         ],
-
         template: `
-            <div class='goodsItem'>
-                <img src='image/defGoods.png' alt='good'></img>
+            <div class="goodsItem">
+                <img src="image/defGoods.png"></img>
                 <h3>{{ item.product_name }}</h3>
                 <p>{{ item.price }} $</p>
-                <button class = 'cartButtonAdd'
-                        type = 'button'
-                        @click = 'addGood'>Добавить</button>
+                <custom_button
+                    class="cartButtonAdd"
+                    @click="addGood">
+                    Добавить
+                </button>
             </div>
         `,
-
         methods: {
             addGood() {
                 serviceWithBody(GOODS, "POST", {
@@ -101,8 +114,8 @@ function init() {
                 <p class="basketItem__Name">{{ item.product_name }}</p>
                 <p class="basketItem__Price">{{ item.price }}$</p>
                 <p class="basketItem__Price">{{ item.count }} шт.</p>
-                <button>+</button>
-                <button>-</button>
+                <custom_button>+</custom_button>
+                <custom_button>-</custom_button>
             </div>
         `
     });
