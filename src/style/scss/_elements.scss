@@ -51,6 +51,8 @@
 
     &Main {
         display: flex;
+        flex-direction: column;
+        padding-top: 8px;
     }
 
     
@@ -59,15 +61,15 @@
 .basketItem {
     display: flex;
     flex-direction: row;
+    margin-bottom: 16px;
 
     &__Name {
         font-weight: bold;
         margin-right: 16px;
-        margin-bottom: 4px; 
     }
 
     &__Price {
-        margin-bottom: 4px;
+        margin-right: 16px;
     }
 
     button {
